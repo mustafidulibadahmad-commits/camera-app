@@ -1,0 +1,349 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #ffffff;
+    --accent-color: #ff3b30;
+    --bg-dark: #000000;
+    --bg-overlay: rgba(0, 0, 0, 0.5);
+    --control-bg: rgba(255, 255, 255, 0.2);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: var(--bg-dark);
+    color: var(--primary-color);
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.camera-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--bg-dark);
+}
+
+#videoPreview {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: var(--bg-dark);
+}
+
+/* Recording Overlay */
+.recording-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    display: none;
+    align-items: center;
+    gap: 12px;
+    z-index: 10;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.6), transparent);
+}
+
+.recording-overlay.active {
+    display: flex;
+}
+
+.recording-indicator {
+    width: 12px;
+    height: 12px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.recording-time {
+    font-size: 16px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--primary-color);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* Top Controls */
+.top-controls {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: flex-end;
+    z-index: 20;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent);
+}
+
+.control-btn {
+    background: var(--control-bg);
+    border: none;
+    border-radius: 20px;
+    color: var(--primary-color);
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 50px;
+    height: 40px;
+}
+
+.control-btn:active {
+    transform: scale(0.95);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.control-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Bottom Controls */
+.bottom-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 40px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 20;
+    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+}
+
+/* Record Button - iPhone 15 Style */
+.record-btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 6px solid var(--primary-color);
+    background: var(--primary-color);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.record-btn:active {
+    transform: scale(0.9);
+}
+
+.record-btn.recording {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    animation: recordPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes recordPulse {
+    0%, 100% { box-shadow: 0 4px 12px rgba(255, 59, 48, 0.4); }
+    50% { box-shadow: 0 4px 20px rgba(255, 59, 48, 0.8); }
+}
+
+.record-btn-inner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    transition: all 0.2s ease;
+}
+
+.record-btn.recording .record-btn-inner {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    background: var(--primary-color);
+}
+
+/* Mode Selector */
+.mode-selector {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    background: var(--control-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 8px;
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 30;
+    min-width: 120px;
+}
+
+.mode-selector.active {
+    display: flex;
+}
+
+.mode-option {
+    background: transparent;
+    border: none;
+    color: var(--primary-color);
+    padding: 12px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+    transition: all 0.2s ease;
+}
+
+.mode-option:hover,
+.mode-option.active {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.mode-option:active {
+    transform: scale(0.98);
+}
+
+/* Permission Prompt */
+.permission-prompt {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--bg-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+}
+
+.permission-prompt.hidden {
+    display: none;
+}
+
+.permission-content {
+    text-align: center;
+    max-width: 300px;
+}
+
+.permission-content h2 {
+    font-size: 24px;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.permission-content p {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: var(--bg-dark);
+    border: none;
+    border-radius: 12px;
+    padding: 14px 28px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:active {
+    transform: scale(0.95);
+    opacity: 0.8;
+}
+
+/* Error Message */
+.error-message {
+    position: absolute;
+    bottom: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 59, 48, 0.9);
+    color: var(--primary-color);
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    display: none;
+    z-index: 30;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.error-message.show {
+    display: block;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .bottom-controls {
+        padding: 30px 20px;
+    }
+    
+    .record-btn {
+        width: 70px;
+        height: 70px;
+        border-width: 5px;
+    }
+    
+    .record-btn-inner {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .record-btn.recording .record-btn-inner {
+        width: 25px;
+        height: 25px;
+    }
+}
+
+/* iOS Safe Area */
+@supports (padding: max(0px)) {
+    .bottom-controls {
+        padding-bottom: max(40px, env(safe-area-inset-bottom));
+    }
+    
+    .top-controls {
+        padding-top: max(20px, env(safe-area-inset-top));
+    }
+}

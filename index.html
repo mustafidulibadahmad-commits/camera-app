@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Camera App - Super Smooth Stabilization</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="camera-container">
+        <!-- Video Preview -->
+        <video id="videoPreview" autoplay playsinline></video>
+        
+        <!-- Recording Overlay -->
+        <div class="recording-overlay" id="recordingOverlay">
+            <div class="recording-indicator"></div>
+            <span class="recording-time" id="recordingTime">00:00</span>
+        </div>
+        
+        <!-- Top Controls -->
+        <div class="top-controls">
+            <button class="control-btn" id="stabilizationBtn" title="Mode Stabilisasi">
+                <span id="stabilizationLabel">Cinematic</span>
+            </button>
+        </div>
+        
+        <!-- Bottom Controls -->
+        <div class="bottom-controls">
+            <button class="control-btn" id="flashBtn" title="Flash">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 3h8l-2 10h6l-4 8-2-10H6z"/>
+                </svg>
+            </button>
+            
+            <button class="record-btn" id="recordBtn">
+                <span class="record-btn-inner"></span>
+            </button>
+            
+            <button class="control-btn" id="switchCameraBtn" title="Switch Camera">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Stabilization Mode Selector -->
+        <div class="mode-selector" id="modeSelector">
+            <button class="mode-option" data-mode="cinematic">Cinematic</button>
+            <button class="mode-option" data-mode="standard">Standard</button>
+            <button class="mode-option" data-mode="auto">Auto</button>
+            <button class="mode-option" data-mode="off">Off</button>
+        </div>
+        
+        <!-- Permission Prompt -->
+        <div class="permission-prompt" id="permissionPrompt">
+            <div class="permission-content">
+                <h2>Izin Kamera Diperlukan</h2>
+                <p>Aplikasi membutuhkan akses kamera untuk merekam video dengan stabilisasi super smooth.</p>
+                <button class="btn-primary" id="requestPermissionBtn">Berikan Izin</button>
+            </div>
+        </div>
+        
+        <!-- Error Message -->
+        <div class="error-message" id="errorMessage"></div>
+    </div>
+    
+    <script src="stabilization.js"></script>
+    <script src="camera.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
